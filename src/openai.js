@@ -6,8 +6,9 @@ import OpenAI from 'openai';
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
 // Initialize OpenAI client
+// Use a dummy key if not set to prevent initialization errors
 const openai = new OpenAI({
-  apiKey: OPENAI_API_KEY,
+  apiKey: OPENAI_API_KEY || 'sk-dummy-key-for-initialization',
   dangerouslyAllowBrowser: true // Note: In production, use a backend server
 });
 
@@ -92,6 +93,11 @@ Important Mapping Rules:
 // Process voice command with GPT
 export async function processVoiceCommand(transcript, currentLedStatus) {
   try {
+    // Check if API key is set
+    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'sk-dummy-key-for-initialization') {
+      throw new Error('OpenAI API key is not configured. Please set VITE_OPENAI_API_KEY in your environment variables.');
+    }
+
     const statusText = Object.entries(currentLedStatus)
       .map(([led, status]) => `${led}: ${status === 1 ? 'ON' : 'OFF'}`)
       .join(', ');

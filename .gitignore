@@ -30,6 +30,3 @@ dist-ssr
 
 # Firebase credentials
 *firebase-adminsdk*.json
-
-# OpenAI configuration (contains API keys)
-src/openai.js
